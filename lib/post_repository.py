@@ -33,3 +33,12 @@ class PostRepository:
         self._connection.execute(
             'DELETE FROM posts WHERE id = %s', [post_id])
         return None
+
+    def find_by_tag(self, tag):
+        rows = self._connection.execute('SELECT id, title, content, tags FROM posts WHERE %s = ANY(tags)', [tag])
+
+        posts = []
+        for row in rows:
+            post = Post(row["title"], row["content"], row["tags"], row["id"])
+            posts.append(post)
+        return posts
