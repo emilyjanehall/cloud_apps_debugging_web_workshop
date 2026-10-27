@@ -34,6 +34,13 @@ def create_post():
 
     connection = get_flask_database_connection(app)
     post_repository = PostRepository(connection)
+
+    tags_input = request.form.get('tags', '').strip()
+    if tags_input:
+        tags_list = [tag.strip() for tag in tags_input.split(',')]
+    else:
+        tags_list = []
+
     new_post = Post(request.form['title'], request.form['content'], request.form['tags'].split(','))
     post_repository.create(new_post)
     posts = post_repository.all()
