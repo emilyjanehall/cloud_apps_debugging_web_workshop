@@ -7,11 +7,11 @@ class PostRepository:
 
     # Retrieve all posts
     def all(self):
-        rows = self._connection.execute('SELECT * from posts')
+        rows = self._connection.execute('SELECT id, title, content, tags FROM posts')
         posts = []
         for row in rows:
-            item = Post(row["title"], row["tags"], row["content"], row["id"])
-            posts.append(item)
+            post = Post(row["title"], row["content"], row["tags"], row["id"])
+            posts.append(post)
         return posts
 
     # Find a single post by its id

@@ -28,12 +28,16 @@ def posts_by_tag(tag):
 # create new post
 @app.route('/posts', methods=['POST'])
 def create_post():
+    print("--- ALL FORM DATA RECEIVED ---")
+    print(request.form)
+    print("------------------------------")
+
     connection = get_flask_database_connection(app)
     post_repository = PostRepository(connection)
     new_post = Post(request.form['title'], request.form['content'], request.form['tags'].split(','))
     post_repository.create(new_post)
     posts = post_repository.all()
-    return render_template('index.html', posts=posts)
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5001, debug=True)
